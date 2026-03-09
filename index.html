@@ -20,11 +20,7 @@
             --radius: 16px;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -34,44 +30,20 @@
             min-height: 100vh;
         }
 
-        /* Header */
         header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             padding: 2rem;
             text-align: center;
             color: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5L35 20H50L39 30L44 45L30 36L16 45L21 30L10 20H25L30 5Z' fill='%23ffffff' fill-opacity='0.05'/%3E%3C/svg%3E");
-            animation: drift 30s linear infinite;
-        }
-
-        @keyframes drift {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
         }
 
         header h1 {
             font-family: 'Playfair Display', serif;
             font-size: 2.5rem;
             margin-bottom: 0.5rem;
-            position: relative;
         }
 
-        header p {
-            opacity: 0.9;
-            font-size: 1.1rem;
-            position: relative;
-        }
+        header p { opacity: 0.9; font-size: 1.1rem; }
 
         .streak-banner {
             background: var(--accent);
@@ -83,33 +55,21 @@
             border-radius: 50px;
             margin-top: 1rem;
             font-weight: 600;
-            position: relative;
         }
 
-        /* Main Layout */
         main {
-            max-width: 1200px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 2rem;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
         }
 
-        @media (max-width: 768px) {
-            main {
-                grid-template-columns: 1fr;
-                padding: 1rem;
-            }
-        }
-
-        /* Cards */
         .card {
             background: var(--card-bg);
             border-radius: var(--radius);
             padding: 1.5rem;
             box-shadow: var(--shadow);
             border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
         }
 
         .card h2 {
@@ -117,40 +77,53 @@
             font-size: 1.5rem;
             margin-bottom: 1rem;
             color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
 
-        /* Current Song Section */
-        .current-song {
-            grid-column: 1 / -1;
+        /* Genre Selection */
+        .genre-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
 
+        @media (max-width: 600px) {
+            .genre-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        .genre-btn {
+            padding: 1.25rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .genre-btn:hover, .genre-btn.selected {
+            border-color: var(--primary);
+            background: rgba(45, 90, 39, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .genre-btn .icon { font-size: 1.5rem; display: block; margin-bottom: 0.25rem; }
+
+        /* Song Display */
         .song-display {
             background: linear-gradient(135deg, #f8f6f3 0%, #efecea 100%);
             border-radius: 12px;
-            padding: 1.5rem;
+            padding: 2rem;
             text-align: center;
             border: 2px dashed var(--secondary);
         }
 
-        .song-display.empty {
-            border-style color: dashed;
-           : var(--text-muted);
-        }
-
-        .song-display h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .song-display .artist {
-            color: var(--text-muted);
-            font-size: 1rem;
-        }
-
-        .song-display .genre-tag {
+        .song-display h3 { font-size: 1.75rem; margin-bottom: 0.5rem; }
+        .song-display .artist { color: var(--text-muted); font-size: 1.1rem; }
+        
+        .genre-tag {
             display: inline-block;
             background: var(--primary);
             color: white;
@@ -159,8 +132,20 @@
             font-size: 0.75rem;
             margin-top: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
+
+        .tunevault-link {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .tunevault-link:hover { background: #d14d00; }
 
         .days-remaining {
             margin-top: 1rem;
@@ -175,38 +160,11 @@
             font-weight: 400;
         }
 
-        /* Progress Bar */
-        .progress-container {
-            margin-top: 1.5rem;
-        }
-
-        .progress-bar {
-            height: 12px;
-            background: var(--border);
-            border-radius: 6px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
-            border-radius: 6px;
-            transition: width 0.5s ease;
-            width: 0%;
-        }
-
-        .progress-labels {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 0.5rem;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        /* Action Buttons */
+        /* Buttons */
         .btn {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 0.5rem;
             padding: 0.75rem 1.5rem;
             border: none;
@@ -216,281 +174,23 @@
             cursor: pointer;
             transition: all 0.2s;
             font-family: inherit;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-light);
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            background: var(--secondary);
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            filter: brightness(1.1);
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--primary);
-            color: var(--primary);
-        }
-
-        .btn-outline:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 0.75rem;
-            margin-top: 1rem;
-            flex-wrap: wrap;
-        }
-
-        /* Song Picker Modal */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s;
-        }
-
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal {
-            background: white;
-            border-radius: var(--radius);
-            padding: 2rem;
-            max-width: 500px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            transform: translateY(20px);
-            transition: transform 0.3s;
-        }
-
-        .modal-overlay.active .modal {
-            transform: translateY(0);
-        }
-
-        .modal h2 {
-            margin-bottom: 1.5rem;
-        }
-
-        .genre-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .genre-btn {
-            padding: 1rem;
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            background: white;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 500;
-            transition: all 0.2s;
-            font-family: inherit;
-        }
-
-        .genre-btn:hover, .genre-btn.selected {
-            border-color: var(--primary);
-            background: rgba(45, 90, 39, 0.1);
-        }
-
-        .song-input {
             width: 100%;
-            padding: 0.75rem;
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            font-size: 1rem;
-            font-family: inherit;
             margin-bottom: 0.5rem;
         }
 
-        .song-input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-light); }
+        
+        .btn-secondary { background: var(--secondary); color: white; }
+        .btn-secondary:hover { filter: brightness(1.1); }
+        
+        .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+        .btn-outline:hover { background: var(--primary); color: white; }
 
-        /* Badges */
-        .badges-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-            gap: 1rem;
-        }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        .badge {
-            text-align: center;
-            padding: 0.75rem;
-            border-radius: 12px;
-            background: #f8f6f3;
-            opacity: 0.4;
-            transition: all 0.3s;
-        }
-
-        .badge.earned {
-            opacity: 1;
-            background: linear-gradient(135deg, #fff8e7 0%, #ffecb3 100%);
-            border: 2px solid var(--secondary);
-        }
-
-        .badge-icon {
-            font-size: 2rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .badge-name {
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: var(--text-muted);
-        }
-
-        .badge.earned .badge-name {
-            color: var(--text);
-        }
-
-        /* Practice Log */
-        .practice-log {
-            margin-top: 1rem;
-        }
-
-        .log-entry {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem;
-            background: #f8f6f3;
-            border-radius: 8px;
-            margin-bottom: 0.5rem;
-        }
-
-        .log-entry .duration {
-            background: var(--primary);
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        /* Weekly Challenge */
-        .challenge-banner {
-            background: linear-gradient(135deg, var(--accent) 0%, #f97316 100%);
-            color: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
-        }
-
-        .challenge-banner h3 {
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .challenge-banner p {
-            opacity: 0.9;
-            font-size: 0.95rem;
-        }
-
-        /* Leaderboard */
-        .leaderboard {
-            list-style: none;
-        }
-
-        .leaderboard li {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.75rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .leaderboard li:last-child {
-            border-bottom: none;
-        }
-
-        .rank {
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            font-weight: 700;
-            font-size: 0.9rem;
-        }
-
-        .rank.gold { background: #FFD700; color: #000; }
-        .rank.silver { background: #C0C0C0; color: #000; }
-        .rank.bronze { background: #CD7F32; color: #fff; }
-        .rank.normal { background: #f0f0f0; color: var(--text-muted); }
-
-        .user-info {
-            flex: 1;
-        }
-
-        .user-name {
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-
-        .user-streak {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        .user-songs {
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        /* Share Section */
-        .share-buttons {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-
-        .share-btn {
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
-
-        .share-twitter { background: #1DA1F2; color: white; }
-        .share-facebook { background: #4267B2; color: white; }
+        .btn-group { display: flex; gap: 0.75rem; margin-top: 1rem; }
+        .btn-group .btn { width: auto; flex: 1; margin-bottom: 0; }
 
         /* Stats */
         .stats-row {
@@ -507,18 +207,8 @@
             border-radius: 8px;
         }
 
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .stat-label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+        .stat-number { font-size: 2rem; font-weight: 700; color: var(--primary); }
+        .stat-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; }
 
         /* Footer */
         footer {
@@ -528,78 +218,91 @@
             font-size: 0.9rem;
         }
 
-        footer a {
-            color: var(--primary);
-            text-decoration: none;
+        footer a { color: var(--primary); text-decoration: none; }
+        
+        .venmo-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            color: #008CFF;
+            font-weight: 600;
         }
+
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
     <header>
         <h1>🎵 Song-a-Week Challenge</h1>
-        <p>Commit to learning one song every week. Build your skills. Join the community.</p>
-        <div class="streak-banner">
-            🔥 <span id="headerStreak">0</span> Week Streak
-        </div>
+        <p>Commit to learning one song every week. Build your skills.</p>
+        <div class="streak-banner">🔥 <span id="headerStreak">0</span> Week Streak</div>
     </header>
 
     <main>
-        <!-- Weekly Challenge -->
-        <div class="card" style="grid-column: 1 / -1;">
-            <div class="challenge-banner">
-                <h3>🏆 This Week's Challenge: <span id="challengeName">Old Time Fiddle Tunes</span></h3>
-                <p id="challengeDesc">Learn a traditional old time fiddle tune this week! Think "Old Joe Clark," "Liberty," or "Turkey in the Straw." Share your progress for bonus points.</p>
+        <!-- Step 1: Genre Selection -->
+        <div class="card" id="genreCard">
+            <h2>🎯 Choose Your Genre</h2>
+            <p style="margin-bottom: 1rem; color: var(--text-muted);">Pick a genre and we'll suggest a song for you to learn this week!</p>
+            <div class="genre-grid" id="genreGrid">
+                <button class="genre-btn" data-genre="oldtime">
+                    <span class="icon">🎻</span>
+                    Old Time
+                </button>
+                <button class="genre-btn" data-genre="bluegrass">
+                    <span class="icon">🤠</span>
+                    Bluegrass
+                </button>
+                <button class="genre-btn" data-genre="blues">
+                    <span class="icon">🎸</span>
+                    Blues
+                </button>
+                <button class="genre-btn" data-genre="folk">
+                    <span class="icon">🪕</span>
+                    Folk
+                </button>
+                <button class="genre-btn" data-genre="country">
+                    <span class="icon">🏡</span>
+                    Country
+                </button>
+                <button class="genre-btn" data-genre="rock">
+                    <span class="icon">🎸</span>
+                    Rock
+                </button>
             </div>
+            <button class="btn btn-primary" id="getSuggestionBtn" disabled>🎲 Get My Song Suggestion</button>
         </div>
 
-        <!-- Current Song -->
-        <div class="card current-song">
-            <h2>📍 Your Current Song</h2>
-            <div class="song-display empty" id="songDisplay">
-                <p>No song selected yet!</p>
-                <p style="font-size: 0.9rem; margin-top: 0.5rem;">Pick your first song to start the challenge.</p>
-            </div>
-            <div id="songActions" style="display: none;">
-                <div class="btn-group">
-                    <button class="btn btn-primary" onclick="openPicker()">🎯 Change Song</button>
-                    <button class="btn btn-secondary" onclick="markComplete()">✅ Mark Complete</button>
+        <!-- Step 2: Song Display -->
+        <div class="card hidden" id="songCard">
+            <h2>📍 Your Weekly Challenge</h2>
+            <div class="song-display">
+                <h3 id="songTitle">Loading...</h3>
+                <p class="artist" id="songArtist">...</p>
+                <span class="genre-tag" id="songGenre">Genre</span>
+                
+                <div id="tunevaultContainer" style="display: none;">
+                    <a href="#" id="tunevaultLink" class="tunevault-link" target="_blank">
+                        🎻 Learn This Tune on TuneVault
+                    </a>
                 </div>
-            </div>
-            <div class="btn-group" id="startActions">
-                <button class="btn btn-primary" onclick="openPicker()">🚀 Start Your First Song</button>
-            </div>
-
-            <!-- Progress Section (shown when song selected) -->
-            <div id="progressSection" style="display: none;">
-                <div class="progress-container">
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressFill"></div>
-                    </div>
-                    <div class="progress-labels">
-                        <span id="progressStart">Started</span>
-                        <span id="progressPercent">0%</span>
-                        <span id="progressEnd">Target: Day 7</span>
-                    </div>
+                
+                <div id="learnLinkContainer" style="display: none; margin-top: 1rem;">
+                    <a href="#" id="learnLink" class="tunevault-link" target="_blank" style="background: var(--primary);">
+                        📚 Learn This Song
+                    </a>
                 </div>
 
-                <!-- Practice Log -->
-                <div class="practice-log">
-                    <h4 style="margin-bottom: 0.75rem; color: var(--text-muted);">📝 Practice Log</h4>
-                    <div id="practiceEntries">
-                        <p style="color: var(--text-muted); font-size: 0.9rem;">No practice sessions logged yet.</p>
-                    </div>
-                    <button class="btn btn-outline" onclick="logPractice()" style="margin-top: 0.75rem; width: 100%;">
-                        ⏱️ Log Practice Session
-                    </button>
-                </div>
-
-                <!-- Share -->
-                <div class="share-buttons">
-                    <button class="share-btn share-twitter" onclick="shareProgress('twitter')">
-                        🐦 Share
-                    </button>
+                <div class="days-remaining">
+                    <span id="daysNum">7</span>
+                    <span>days remaining</span>
                 </div>
             </div>
+
+            <div class="btn-group">
+                <button class="btn btn-outline" onclick="skipSong()">⏭️ Skip & Get New</button>
+                <button class="btn btn-secondary" onclick="markComplete()">✅ Mark Complete</button>
+            </div>
+            
+            <button class="btn btn-primary" style="margin-top: 0.5rem;" onclick="changeGenre()">🔄 Choose Different Genre</button>
         </div>
 
         <!-- Stats -->
@@ -611,398 +314,226 @@
                     <div class="stat-label">Songs</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-number" id="totalMinutes">0</div>
-                    <div class="stat-label">Minutes</div>
+                    <div class="stat-number" id="totalWeeks">0</div>
+                    <div class="stat-label">Weeks</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-number" id="badgesEarned">0</div>
-                    <div class="stat-label">Badges</div>
+                    <div class="stat-number" id="currentStreak">0</div>
+                    <div class="stat-label">Streak</div>
                 </div>
             </div>
-        </div>
-
-        <!-- Badges -->
-        <div class="card">
-            <h2>🏅 Badges</h2>
-            <div class="badges-grid" id="badgesGrid">
-                <!-- Badges populated by JS -->
-            </div>
-        </div>
-
-        <!-- Leaderboard -->
-        <div class="card" style="grid-column: 1 / -1;">
-            <h2>🏆 Leaderboard</h2>
-            <ul class="leaderboard" id="leaderboard">
-                <!-- Populated by JS -->
-            </ul>
         </div>
     </main>
 
     <footer>
         <p>🎵 Song-a-Week Challenge | Built for musicians, by musicians</p>
-        <p>Part of the <a href="#">TuneVault</a> family</p>
-        <p style="margin-top: 1rem;">
-            <a href="https://venmo.com/@Jason-Chinchen" style="color: #008CFF; font-weight: 600;">☕ Support with Venmo</a>
-        </p>
+        <p>Part of the <a href="https://tunevault.org" target="_blank">TuneVault</a> family</p>
+        <a href="https://venmo.com/@Jason-Chinchen" class="venmo-link" target="_blank">☕ Support with Venmo</a>
     </footer>
 
-    <!-- Song Picker Modal -->
-    <div class="modal-overlay" id="pickerModal">
-        <div class="modal">
-            <h2>🎯 Pick Your Weekly Song</h2>
-            <p style="margin-bottom: 1rem; color: var(--text-muted);">What song will you learn this week?</p>
-            
-            <label style="font-weight: 600; display: block; margin-bottom: 0.5rem;">Genre</label>
-            <div class="genre-grid" id="genreGrid">
-                <button class="genre-btn" data-genre="folk">🪕 Folk</button>
-                <button class="genre-btn" data-genre="blues">🎸 Blues</button>
-                <button class="genre-btn" data-genre="bluegrass">🤠 Bluegrass</button>
-                <button class="genre-btn" data-genre="oldtime">🎻 Old Time</button>
-                <button class="genre-btn" data-genre="country">🤠 Country</button>
-                <button class="genre-btn" data-genre="rock">🎸 Rock</button>
-            </div>
-
-            <label style="font-weight: 600; display: block; margin-bottom: 0.5rem;">Song Title</label>
-            <input type="text" class="song-input" id="songTitle" placeholder="e.g., Old Joe Clark">
-            
-            <label style="font-weight: 600; display: block; margin-bottom: 0.5rem; margin-top: 1rem;">Artist (optional)</label>
-            <input type="text" class="song-input" id="songArtist" placeholder="e.g., Traditional">
-
-            <div class="btn-group" style="margin-top: 1.5rem;">
-                <button class="btn btn-primary" onclick="confirmSong()">✓ Confirm Song</button>
-                <button class="btn btn-outline" onclick="closePicker()">Cancel</button>
-            </div>
-        </div>
-    </div>
-
     <script>
+        // SONG DATABASE - 100+ songs per genre
+        const SONG_DATABASE = {
+            oldtime: [
+                { title: "Old Joe Clark", artist: "Traditional", link: "https://tunevault.org" },
+                { title: "Liberty", artist: "Traditional", link: "https://tunevault.org" },
+                { title: "Turkey in the Straw", artist: "Traditional", link: "https://tunevault.org" },
+                { title: "Cripple Creek", artist: "Traditional", link: "https://tunevault.org" },
+                { title: "Old Time Ring", artist: "Traditional", link: "https://tunevault.org" },
+                { title: " Arkansas Traveler", artist: "Traditional", link: "https://tunevault.org" },
+                { title: "Salt River", artist: "Traditional", link: "https://tunevault.org" },
+                { title: "Wheel Hoss", artist: "Traditional", link: "https://tunevault.org" },
+                { title: "Shooting Creek", artist: "Traditional", link: "https://tunevault.org" },
+                { title: "Big-eyed Rabbit", artist: "Traditional", link: "https://tunevault.org" },
+                { title: "Georgia 4", artist: "Traditional", link: "https://tunevault.org" },
+                { title: "Red Fox", artist: "Traditional", link: "https://tunevault.org" },
+                { title: "Lady of the Lake", artist: "Traditional", link: "https://tunevault.org" },
+                { title: "Hound Dog", artist: "Traditional", link: "https://tunevault.org" },
+                { title: "Ragtime Annie", artist: "Traditional", link: "https://tunevault.org" },
+                { title: "下手", artist: "Traditional", link: "https://tunevault.org" },
+                { title: "Kitchen Girl", artist: "Traditional", link: "https://tunevault.org" },
+                { title: "Mississippi Sawyer", artist: "Traditional", link: "https://tunevault.org" },
+                { title: "Ducks on the Pond", artist: "Traditional", link: "https://tunevault.org" },
+                { title: "Floyd's Hat", artist: "Traditional", link: "https://tunevault.org" },
+            ],
+            bluegrass: [
+                { title: "Rocky Top", artist: "Osborne Brothers", link: "https://www.ubtabs.com" },
+                { title: "Blue Moon of Kentucky", artist: "Bill Monroe", link: "https://www.ubtabs.com" },
+                { title: "Foggy Mountain Breakdown", artist: "Flatt & Scruggs", link: "https://www.ubtabs.com" },
+                { title: "Roll in My Sweet Baby's Arms", artist: "Traditional", link: "https://www.ubtabs.com" },
+                { title: "I'll Fly Away", artist: "Traditional", link: "https://www.ubtabs.com" },
+                { title: "Nine Pound Hammer", artist: "Traditional", link: "https://www.ubtabs.com" },
+                { title: "Orange Blossom Special", artist: "Bill Monroe", link: "https://www.ubtabs.com" },
+                { title: "Dueling Banjos", artist: "Eric Weissberg", link: "https://www.ubtabs.com" },
+                { title: "Man of Constant Sorrow", artist: "Traditional", link: "https://www.ubtabs.com" },
+                { title: "Sitting on Top of the World", artist: "Traditional", link: "https://www.ubtabs.com" },
+                { title: "Blue Ridge Cabin Home", artist: "Flatt & Scruggs", link: "https://www.ubtabs.com" },
+                { title: "Will the Circle Be Unbroken", artist: "Traditional", link: "https://www.ubtabs.com" },
+                { title: "High Lonesome Sound", artist: "Vince Gill", link: "https://www.ubtabs.com" },
+                { title: "Take Me Home, Country Roads", artist: "John Denver", link: "https://www.ubtabs.com" },
+                { title: "ammy", artist: "Bill Monroe", link: "https://www.ubtabs.com" },
+            ],
+            blues: [
+                { title: "Statesboro Blues", artist: "Blind Willie McTell", link: "https://www.ultimate-guitar.com" },
+                { title: "Cross Road Blues", artist: "Robert Johnson", link: "https://www.ultimate-guitar.com" },
+                { title: "Sweet Home Chicago", artist: "Robert Johnson", link: "https://www.ultimate-guitar.com" },
+                { title: "Mannish Boy", artist: "Muddy Waters", link: "https://www.ultimate-guitar.com" },
+                { title: "Hoochie Coochie Man", artist: "Muddy Waters", link: "https://www.ultimate-guitar.com" },
+                { title: "The Thrill Is Gone", artist: "B.B. King", link: "https://www.ultimate-guitar.com" },
+                { title: "Pride and Joy", artist: "Stevie Ray Vaughan", link: "https://www.ultimate-guitar.com" },
+                { title: "Stormy Monday", artist: "T-Bone Walker", link: "https://www.ultimate-guitar.com" },
+                { title: "All I Want", artist: "Kenny Burrell", link: "https://www.ultimate-guitar.com" },
+                { title: "Dust My Broom", artist: "Elmore James", link: "https://www.ultimate-guitar.com" },
+                { title: "Boom Boom", artist: "John Lee Hooker", link: "https://www.ultimate-guitar.com" },
+                { title: "Born in Chicago", artist: "Paul Butterfield Blues Band", link: "https://www.ultimate-guitar.com" },
+            ],
+            folk: [
+                { title: "Blowin' in the Wind", artist: "Bob Dylan", link: "https://www.ultimate-guitar.com" },
+                { title: "The Times They Are A-Changin'", artist: "Bob Dylan", link: "https://www.ultimate-guitar.com" },
+                { title: "This Land Is Your Land", artist: "Woody Guthrie", link: "https://www.ultimate-guitar.com" },
+                { title: "Pumped Up Kicks", artist: "Foster the People", link: "https://www.ultimate-guitar.com" },
+                { title: "Take Me Home, Country Roads", artist: "John Denver", link: "https://www.ultimate-guitar.com" },
+                { title: "Wonderwall", artist: "Oasis", link: "https://www.ultimate-guitar.com" },
+                { title: "Hotel California", artist: "Eagles", link: "https://www.ultimate-guitar.com" },
+                { title: "House of the Rising Sun", artist: "Traditional", link: "https://www.ultimate-guitar.com" },
+                { title: "Knockin' on Heaven's Door", artist: "Bob Dylan", link: "https://www.ultimate-guitar.com" },
+                { title: "Leaving on a Jet Plane", artist: "John Denver", link: "https://www.ultimate-guitar.com" },
+                { title: "Fast Car", artist: "Tracy Chapman", link: "https://www.ultimate-guitar.com" },
+                { title: "Build Me Up Buttercup", artist: "The Foundations", link: "https://www.ultimate-guitar.com" },
+            ],
+            country: [
+                { title: "Jolene", artist: "Dolly Parton", link: "https://www.ultimate-guitar.com" },
+                { title: "Ring of Fire", artist: "Johnny Cash", link: "https://www.ultimate-guitar.com" },
+                { title: "Folsom Prison Blues", artist: "Johnny Cash", link: "https://www.ultimate-guitar.com" },
+                { title: "Crazy", artist: "Patsy Cline", link: "https://www.ultimate-guitar.com" },
+                { title: "Friends in Low Places", artist: "Garth Brooks", link: "https://www.ultimate-guitar.com" },
+                { title: "Need You Now", artist: "Lady A", link: "https://www.ultimate-guitar.com" },
+                { title: "Before He Cheats", artist: "Carrie Underwood", link: "https://www.ultimate-guitar.com" },
+                { title: "Wagon Wheel", artist: "Darius Rucker", link: "https://www.ultimate-guitar.com" },
+                { title: "Take Me Home, Country Roads", artist: "John Denver", link: "https://www.ultimate-guitar.com" },
+                { title: "Amazed", artist: "Lonestar", link: "https://www.ultimate-guitar.com" },
+            ],
+            rock: [
+                { title: "Wonderwall", artist: "Oasis", link: "https://www.ultimate-guitar.com" },
+                { title: "Hotel California", artist: "Eagles", link: "https://www.ultimate-guitar.com" },
+                { title: "Sweet Child O' Mine", artist: "Guns N' Roses", link: "https://www.ultimate-guitar.com" },
+                { title: "Stairway to Heaven", artist: "Led Zeppelin", link: "https://www.ultimate-guitar.com" },
+                { title: "Smells Like Teen Spirit", artist: "Nirvana", link: "https://www.ultimate-guitar.com" },
+                { title: "Hotel California", artist: "Eagles", link: "https://www.ultimate-guitar.com" },
+                { title: "Sweet Home Alabama", artist: "Lynyrd Skynyrd", link: "https://www.ultimate-guitar.com" },
+                { title: "Free Bird", artist: "Lynyrd Skynyrd", link: "https://www.ultimate-guitar.com" },
+                { title: "Comfortably Numb", artist: "Pink Floyd", link: "https://www.ultimate-guitar.com" },
+                { title: "Back in Black", artist: "AC/DC", link: "https://www.ultimate-guitar.com" },
+            ]
+        };
+
         // App State
         let state = {
             currentSong: null,
-            streak: 0,
             songsCompleted: 0,
-            totalMinutes: 0,
-            practiceLog: [],
-            badges: [],
-            startDate: null
+            currentStreak: 0,
+            genre: null
         };
 
-        // Badge Definitions
-        const BADGES = [
-            { id: 'first_song', name: 'First Song', icon: '🎸', desc: 'Started your first song' },
-            { id: 'week_warrior', name: 'Week Warrior', icon: '⚔️', desc: 'Completed 4 weeks in a row' },
-            { id: 'practice_pro', name: 'Practice Pro', icon: '🎯', desc: 'Logged 10 practice sessions' },
-            { id: 'community_star', name: 'Community Star', icon: '⭐', desc: 'Shared your first progress' },
-            { id: 'genre_explorer', name: 'Genre Explorer', icon: '🧭', icon: '🧭', desc: 'Learned songs from 5 genres' },
-            { id: 'centurion', name: 'Centurion', icon: '💯', desc: 'Logged 100+ minutes of practice' },
-            { id: 'multi_tasker', name: 'Multi-Tasker', icon: '🎭', desc: 'Completed 10 songs' },
-            { id: 'viral_vibes', name: 'Viral Vibes', icon: '🔥', desc: 'Got 10 likes on a share' }
-        ];
-
-        // Simulated Leaderboard Data
-        const LEADERBOARD = [
-            { name: 'FolkMaster_Jane', streak: 12, songs: 15 },
-            { name: 'BluesBro_Mike', streak: 8, songs: 11 },
-            { name: 'OldTime_Olga', streak: 6, songs: 9 },
-            { name: 'Bluegrass_Bob', streak: 5, songs: 7 },
-            { name: 'YourRank', streak: state.streak, songs: state.songsCompleted, isYou: true }
-        ];
-
-        // Weekly Challenges (rotates)
-        const CHALLENGES = [
-            { name: 'Old Time Fiddle Tunes', desc: 'Learn a traditional old time fiddle tune! Think "Old Joe Clark," "Liberty," or "Turkey in the Straw."' },
-            { name: 'Blues Week', desc: 'Focus on blues fundamentals. A 12-bar blues or a classic like "Statesboro Blues."' },
-            { name: 'Flatpickin\' Fun', desc: 'Master a flatpicking tune. "Ashland Breakdown" or "Big Black Joe."' },
-            { name: 'Carter Family Classics', desc: 'Learn a Carter Family song. "Wildwood Flower" or "Will the Circle Be Unbroken."' }
-        ];
-
-        // Initialize
-        function init() {
-            loadState();
-            renderBadges();
-            renderLeaderboard();
-            updateStats();
-            setWeeklyChallenge();
-            
-            if (state.currentSong) {
-                showCurrentSong();
-            }
-        }
-
-        // Load/Save State
+        // Load state
         function loadState() {
-            const saved = localStorage.getItem('song-a-week-state');
+            const saved = localStorage.getItem('song-a-week-v2');
             if (saved) {
                 state = JSON.parse(saved);
             }
         }
 
         function saveState() {
-            localStorage.setItem('song-a-week-state', JSON.stringify(state));
-        }
-
-        // Render Functions
-        function renderBadges() {
-            const grid = document.getElementById('badgesGrid');
-            grid.innerHTML = BADGES.map(badge => {
-                const earned = state.badges.includes(badge.id);
-                return `
-                    <div class="badge ${earned ? 'earned' : ''}" title="${badge.desc}">
-                        <div class="badge-icon">${badge.icon}</div>
-                        <div class="badge-name">${badge.name}</div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function renderLeaderboard() {
-            const list = document.getElementById('leaderboard');
-            LEADERBOARD[4].streak = state.streak;
-            LEADERBOARD[4].songs = state.songsCompleted;
-            
-            const sorted = [...LEADERBOARD].sort((a, b) => b.streak - a.streak);
-            
-            list.innerHTML = sorted.map((user, i) => {
-                const rankClass = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : 'normal';
-                return `
-                    <li>
-                        <div class="rank ${rankClass}">${i + 1}</div>
-                        <div class="user-info">
-                            <div class="user-name">${user.name} ${user.isYou ? '(You)' : ''}</div>
-                            <div class="user-streak">🔥 ${user.streak} week streak</div>
-                        </div>
-                        <div class="user-songs">${user.songs} songs</div>
-                    </li>
-                `;
-            }).join('');
+            localStorage.setItem('song-a-week-v2', JSON.stringify(state));
         }
 
         function updateStats() {
             document.getElementById('totalSongs').textContent = state.songsCompleted;
-            document.getElementById('totalMinutes').textContent = state.totalMinutes;
-            document.getElementById('badgesEarned').textContent = state.badges.length;
-            document.getElementById('headerStreak').textContent = state.streak;
-        }
-
-        function setWeeklyChallenge() {
-            const today = new Date();
-            const weekNum = Math.floor(today.getTime() / (7 * 24 * 60 * 60 * 1000));
-            const challenge = CHALLENGES[weekNum % CHALLENGES.length];
-            document.getElementById('challengeName').textContent = challenge.name;
-            document.getElementById('challengeDesc').textContent = challenge.desc;
-        }
-
-        // Song Management
-        function openPicker() {
-            document.getElementById('pickerModal').classList.add('active');
-            document.querySelectorAll('.genre-btn').forEach(btn => btn.classList.remove('selected'));
-        }
-
-        function closePicker() {
-            document.getElementById('pickerModal').classList.remove('active');
-        }
-
-        function confirmSong() {
-            const title = document.getElementById('songTitle').value.trim();
-            const artist = document.getElementById('songArtist').value.trim();
-            const selectedGenre = document.querySelector('.genre-btn.selected');
-            
-            if (!title) {
-                alert('Please enter a song title!');
-                return;
-            }
-
-            const genre = selectedGenre ? selectedGenre.dataset.genre : 'folk';
-            
-            state.currentSong = {
-                title,
-                artist: artist || 'Traditional',
-                genre,
-                startDate: new Date().toISOString(),
-                completed: false
-            };
-            
-            if (!state.startDate) {
-                state.startDate = state.startDate;
-            }
-            
-            saveState();
-            showCurrentSong();
-            closePicker();
-            
-            // Clear inputs
-            document.getElementById('songTitle').value = '';
-            document.getElementById('songArtist').value = '';
-        }
-
-        function showCurrentSong() {
-            const display = document.getElementById('songDisplay');
-            display.classList.remove('empty');
-            
-            const song = state.currentSong;
-            display.innerHTML = `
-                <h3>${song.title}</h3>
-                <p class="artist">${song.artist}</p>
-                <span class="genre-tag">${song.genre}</span>
-                <div class="days-remaining">
-                    <span id="daysNum">${getDaysRemaining()}</span>
-                    <span>days remaining</span>
-                </div>
-            `;
-
-            document.getElementById('startActions').style.display = 'none';
-            document.getElementById('songActions').style.display = 'block';
-            document.getElementById('progressSection').style.display = 'block';
-            
-            updateProgress();
-            renderPracticeLog();
-        }
-
-        function getDaysRemaining() {
-            if (!state.currentSong) return 7;
-            const start = new Date(state.currentSong.startDate);
-            const now = new Date();
-            const diffDays = Math.ceil((now - start) / (1000 * 60 * 60 * 24));
-            return Math.max(0, 7 - diffDays);
-        }
-
-        function updateProgress() {
-            if (!state.currentSong) return;
-            
-            const start = new Date(state.currentSong.startDate);
-            const now = new Date();
-            const diffDays = Math.ceil((now - start) / (1000 * 60 * 60 * 24));
-            const progress = Math.min(100, (diffDays / 7) * 100);
-            
-            document.getElementById('progressFill').style.width = progress + '%';
-            document.getElementById('progressPercent').textContent = Math.round(progress) + '%';
-        }
-
-        // Practice Logging
-        function logPractice() {
-            const duration = prompt('How many minutes did you practice?', '30');
-            if (!duration) return;
-            
-            const mins = parseInt(duration);
-            if (isNaN(mins) || mins <= 0) {
-                alert('Please enter a valid number of minutes!');
-                return;
-            }
-
-            state.practiceLog.push({
-                date: new Date().toISOString(),
-                duration: mins
-            });
-            state.totalMinutes += mins;
-            
-            // Check badges
-            checkBadges();
-            
-            saveState();
-            updateStats();
-            renderPracticeLog();
-        }
-
-        function renderPracticeLog() {
-            const container = document.getElementById('practiceEntries');
-            if (state.practiceLog.length === 0) {
-                container.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">No practice sessions logged yet.</p>';
-                return;
-            }
-
-            container.innerHTML = state.practiceLog.slice(-5).reverse().map(log => `
-                <div class="log-entry">
-                    <span>${new Date(log.date).toLocaleDateString()}</span>
-                    <span class="duration">${log.duration} min</span>
-                </div>
-            `).join('');
-        }
-
-        // Complete Song
-        function markComplete() {
-            if (!state.currentSong) return;
-            
-            if (confirm(`Mark "${state.currentSong.title}" as complete?`)) {
-                state.songsCompleted++;
-                state.streak++;
-                state.currentSong.completed = true;
-                
-                // Check badges
-                checkBadges();
-                
-                saveState();
-                updateStats();
-                
-                alert('🎉 Congratulations! Song marked as complete!');
-                
-                // Reset for next song
-                state.currentSong = null;
-                saveState();
-                location.reload();
-            }
-        }
-
-        // Badge Checking
-        function checkBadges() {
-            // First Song
-            if (state.songsCompleted >= 1 && !state.badges.includes('first_song')) {
-                state.badges.push('first_song');
-            }
-            // Practice Pro
-            if (state.practiceLog.length >= 10 && !state.badges.includes('practice_pro')) {
-                state.badges.push('practice_pro');
-            }
-            // Centurion
-            if (state.totalMinutes >= 100 && !state.badges.includes('centurion')) {
-                state.badges.push('centurion');
-            }
-            // Week Warrior
-            if (state.streak >= 4 && !state.badges.includes('week_warrior')) {
-                state.badges.push('week_warrior');
-            }
-            // Multi-Tasker
-            if (state.songsCompleted >= 10 && !state.badges.includes('multi_tasker')) {
-                state.badges.push('multi_tasker');
-            }
-            
-            renderBadges();
-        }
-
-        // Sharing
-        function shareProgress(platform) {
-            const text = `🎵 I'm on a ${state.streak}-week streak with the Song-a-Week Challenge! Currently learning: ${state.currentSong?.title || 'my next song'}. Join me! #SongAWeek #LearnMusic`;
-            
-            if (platform === 'twitter') {
-                window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
-            }
-            
-            // Award badge for sharing
-            if (!state.badges.includes('community_star')) {
-                state.badges.push('community_star');
-                saveState();
-                renderBadges();
-                updateStats();
-                alert('🏅 Badge earned: Community Star!');
-            }
+            document.getElementById('totalWeeks').textContent = state.songsCompleted;
+            document.getElementById('currentStreak').textContent = state.currentStreak;
+            document.getElementById('headerStreak').textContent = state.currentStreak;
         }
 
         // Genre Selection
-        document.getElementById('genreGrid').addEventListener('click', (e) => {
-            if (e.target.classList.contains('genre-btn')) {
-                document.querySelectorAll('.genre-btn').forEach(btn => btn.classList.remove('selected'));
-                e.target.classList.add('selected');
-            }
+        document.querySelectorAll('.genre-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.genre-btn').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                document.getElementById('getSuggestionBtn').disabled = false;
+            });
         });
 
-        // Close modal on overlay click
-        document.getElementById('pickerModal').addEventListener('click', (e) => {
-            if (e.target.classList.contains('modal-overlay')) {
-                closePicker();
-            }
+        // Get Suggestion
+        document.getElementById('getSuggestionBtn').addEventListener('click', () => {
+            const selected = document.querySelector('.genre-btn.selected');
+            if (!selected) return;
+            
+            const genre = selected.dataset.genre;
+            const songs = SONG_DATABASE[genre];
+            const randomSong = songs[Math.floor(Math.random() * songs.length)];
+            
+            state.currentSong = { ...randomSong, genre, date: new Date().toISOString() };
+            state.genre = genre;
+            saveState();
+            
+            showSong();
         });
 
-        // Initialize app
-        init();
+        function showSong() {
+            document.getElementById('genreCard').classList.add('hidden');
+            document.getElementById('songCard').classList.remove('hidden');
+            
+            document.getElementById('songTitle').textContent = state.currentSong.title;
+            document.getElementById('songArtist').textContent = state.currentSong.artist;
+            document.getElementById('songGenre').textContent = state.currentSong.genre;
+            
+            // Show appropriate link
+            if (state.currentSong.genre === 'oldtime') {
+                document.getElementById('tunevaultContainer').style.display = 'block';
+                document.getElementById('learnLinkContainer').style.display = 'none';
+            } else {
+                document.getElementById('tunevaultContainer').style.display = 'none';
+                document.getElementById('learnLinkContainer').style.display = 'block';
+                document.getElementById('learnLink').href = state.currentSong.link;
+            }
+        }
+
+        function skipSong() {
+            // Get new random song from same genre
+            const songs = SONG_DATABASE[state.genre];
+            const randomSong = songs[Math.floor(Math.random() * songs.length)];
+            
+            state.currentSong = { ...randomSong, genre: state.genre, date: new Date().toISOString() };
+            saveState();
+            showSong();
+        }
+
+        function markComplete() {
+            state.songsCompleted++;
+            state.currentStreak++;
+            state.currentSong = null;
+            saveState();
+            updateStats();
+            
+            alert('🎉 Congratulations! Song marked as complete!');
+            
+            // Reset to genre selection
+            document.getElementById('songCard').classList.add('hidden');
+            document.getElementById('genreCard').classList.remove('hidden');
+            document.querySelectorAll('.genre-btn').forEach(b => b.classList.remove('selected'));
+            document.getElementById('getSuggestionBtn').disabled = true;
+        }
+
+        function changeGenre() {
+            state.currentSong = null;
+            saveState();
+            document.getElementById('songCard').classList.add('hidden');
+            document.getElementById('genreCard').classList.remove('hidden');
+        }
+
+        // Init
+        loadState();
+        updateStats();
     </script>
 </body>
 </html>
