@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎵 Song-a-Week Challenge</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2D5A27;
+            --primary-light: #4A7C43;
+            --secondary: #D4A574;
+            --accent: #E85D04;
+            --bg: #FDFBF7;
+            --card-bg: #FFFFFF;
+            --text: #1A1A1A;
+            --text-muted: #666;
+            --border: #E8E4DE;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --radius: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            padding: 2rem;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5L35 20H50L39 30L44 45L30 36L16 45L21 30L10 20H25L30 5Z' fill='%23ffffff' fill-opacity='0.05'/%3E%3C/svg%3E");
+            animation: drift 30s linear infinite;
+        }
+
+        @keyframes drift {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+            position: relative;
+        }
+
+        .streak-banner {
+            background: var(--accent);
+            color: white;
+            padding: 0.75rem 2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-radius: 50px;
+            margin-top: 1rem;
+            font-weight: 600;
+            position: relative;
+        }
+
+        /* Main Layout */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            main {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Current Song Section */
+        .current-song {
+            grid-column: 1 / -1;
+        }
+
+        .song-display {
+            background: linear-gradient(135deg, #f8f6f3 0%, #efecea 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 2px dashed var(--secondary);
+        }
+
+        .song-display.empty {
+            border-style color: dashed;
+           : var(--text-muted);
+        }
+
+        .song-display h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .song-display .artist {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .song-display .genre-tag {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            margin-top: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .days-remaining {
+            margin-top: 1rem;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .days-remaining span {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-top: 1.5rem;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: 6px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Action Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            filter: brightness(1.1);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* Song Picker Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: white;
+            border-radius: var(--radius);
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            transform: translateY(20px);
+            transition: transform 0.3s;
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal h2 {
+            margin-bottom: 1.5rem;
+        }
+
+        .genre-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .genre-btn {
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .genre-btn:hover, .genre-btn.selected {
+            border-color: var(--primary);
+            background: rgba(45, 90, 39, 0.1);
+        }
+
+        .song-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            margin-bottom: 0.5rem;
+        }
+
+        .song-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Badges */
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 1rem;
+        }
+
+        .badge {
+            text-align: center;
+            padding: 0.75rem;
+            border-radius: 12px;
+            background: #f8f6f3;
+            opacity: 0.4;
+            transition: all 0.3s;
+        }
+
+        .badge.earned {
+            opacity: 1;
+            background: linear-gradient(135deg, #fff8e7 0%, #ffecb3 100%);
+            border: 2px solid var(--secondary);
+        }
+
+        .badge-icon {
+            font-size: 2rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .badge-name {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .badge.earned .badge-name {
+            color: var(--text);
+        }
+
+        /* Practice Log */
+        .practice-log {
+            margin-top: 1rem;
+        }
+
+        .log-entry {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: #f8f6f3;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+        }
+
+        .log-entry .duration {
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* Weekly Challenge */
+        .challenge-banner {
+            background: linear-gradient(135deg, var(--accent) 0%, #f97316 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .challenge-banner h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .challenge-banner p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        /* Leaderboard */
+        .leaderboard {
+            list-style: none;
+        }
+
+        .leaderboard li {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .leaderboard li:last-child {
+            border-bottom: none;
+        }
+
+        .rank {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .rank.gold { background: #FFD700; color: #000; }
+        .rank.silver { background: #C0C0C0; color: #000; }
+        .rank.bronze { background: #CD7F32; color: #fff; }
+        .rank.normal { background: #f0f0f0; color: var(--text-muted); }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .user-streak {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .user-songs {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Share Section */
+        .share-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .share-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .share-twitter { background: #1DA1F2; color: white; }
+        .share-facebook { background: #4267B2; color: white; }
+
+        /* Stats */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 1rem;
+            background: #f8f6f3;
+            border-radius: 8px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🎵 Song-a-Week Challenge</h1>
+        <p>Commit to learning one song every week. Build your skills. Join the community.</p>
+        <div class="streak-banner">
+            🔥 <span id="headerStreak">0</span> Week Streak
+        </div>
+    </header>
+
+    <main>
+        <!-- Weekly Challenge -->
+        <div class="card" style="grid-column: 1 / -1;">
+            <div class="challenge-banner">
+                <h3>🏆 This Week's Challenge: <span id="challengeName">Old Time Fiddle Tunes</span></h3>
+                <p id="challengeDesc">Learn a traditional old time fiddle tune this week! Think "Old Joe Clark," "Liberty," or "Turkey in the Straw." Share your progress for bonus points.</p>
+            </div>
+        </div>
+
+        <!-- Current Song -->
+        <div class="card current-song">
+            <h2>📍 Your Current Song</h2>
+            <div class="song-display empty" id="songDisplay">
+                <p>No song selected yet!</p>
+                <p style="font-size: 0.9rem; margin-top: 0.5rem;">Pick your first song to start the challenge.</p>
+            </div>
+            <div id="songActions" style="display: none;">
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="openPicker()">🎯 Change Song</button>
+                    <button class="btn btn-secondary" onclick="markComplete()">✅ Mark Complete</button>
+                </div>
+            </div>
+            <div class="btn-group" id="startActions">
+                <button class="btn btn-primary" onclick="openPicker()">🚀 Start Your First Song</button>
+            </div>
+
+            <!-- Progress Section (shown when song selected) -->
+            <div id="progressSection" style="display: none;">
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-labels">
+                        <span id="progressStart">Started</span>
+                        <span id="progressPercent">0%</span>
+                        <span id="progressEnd">Target: Day 7</span>
+                    </div>
+                </div>
+
+                <!-- Practice Log -->
+                <div class="practice-log">
+                    <h4 style="margin-bottom: 0.75rem; color: var(--text-muted);">📝 Practice Log</h4>
+                    <div id="practiceEntries">
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">No practice sessions logged yet.</p>
+                    </div>
+                    <button class="btn btn-outline" onclick="logPractice()" style="margin-top: 0.75rem; width: 100%;">
+                        ⏱️ Log Practice Session
+                    </button>
+                </div>
+
+                <!-- Share -->
+                <div class="share-buttons">
+                    <button class="share-btn share-twitter" onclick="shareProgress('twitter')">
+                        🐦 Share
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="card">
+            <h2>📊 Your Stats</h2>
+            <div class="stats-row">
+                <div class="stat-box">
+                    <div class="stat-number" id="totalSongs">0</div>
+                    <div class="stat-label">Songs</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="totalMinutes">0</div>
+                    <div class="stat-label">Minutes</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="badgesEarned">0</div>
+                    <div class="stat-label">Badges</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Badges -->
+        <div class="card">
+            <h2>🏅 Badges</h2>
+            <div class="badges-grid" id="badgesGrid">
+                <!-- Badges populated by JS -->
+            </div>
+        </div>
+
+        <!-- Leaderboard -->
+        <div class="card" style="grid-column: 1 / -1;">
+            <h2>🏆 Leaderboard</h2>
+            <ul class="leaderboard" id="leaderboard">
+                <!-- Populated by JS -->
+            </ul>
+        </div>
+    </main>
+
+    <footer>
+        <p>🎵 Song-a-Week Challenge | Built for musicians, by musicians</p>
+        <p>Part of the <a href="#">TuneVault</a> family</p>
+    </footer>
+
+    <!-- Song Picker Modal -->
+    <div class="modal-overlay" id="pickerModal">
+        <div class="modal">
+            <h2>🎯 Pick Your Weekly Song</h2>
+            <p style="margin-bottom: 1rem; color: var(--text-muted);">What song will you learn this week?</p>
+            
+            <label style="font-weight: 600; display: block; margin-bottom: 0.5rem;">Genre</label>
+            <div class="genre-grid" id="genreGrid">
+                <button class="genre-btn" data-genre="folk">🪕 Folk</button>
+                <button class="genre-btn" data-genre="blues">🎸 Blues</button>
+                <button class="genre-btn" data-genre="bluegrass">🤠 Bluegrass</button>
+                <button class="genre-btn" data-genre="oldtime">🎻 Old Time</button>
+                <button class="genre-btn" data-genre="country">🤠 Country</button>
+                <button class="genre-btn" data-genre="rock">🎸 Rock</button>
+            </div>
+
+            <label style="font-weight: 600; display: block; margin-bottom: 0.5rem;">Song Title</label>
+            <input type="text" class="song-input" id="songTitle" placeholder="e.g., Old Joe Clark">
+            
+            <label style="font-weight: 600; display: block; margin-bottom: 0.5rem; margin-top: 1rem;">Artist (optional)</label>
+            <input type="text" class="song-input" id="songArtist" placeholder="e.g., Traditional">
+
+            <div class="btn-group" style="margin-top: 1.5rem;">
+                <button class="btn btn-primary" onclick="confirmSong()">✓ Confirm Song</button>
+                <button class="btn btn-outline" onclick="closePicker()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // App State
+        let state = {
+            currentSong: null,
+            streak: 0,
+            songsCompleted: 0,
+            totalMinutes: 0,
+            practiceLog: [],
+            badges: [],
+            startDate: null
+        };
+
+        // Badge Definitions
+        const BADGES = [
+            { id: 'first_song', name: 'First Song', icon: '🎸', desc: 'Started your first song' },
+            { id: 'week_warrior', name: 'Week Warrior', icon: '⚔️', desc: 'Completed 4 weeks in a row' },
+            { id: 'practice_pro', name: 'Practice Pro', icon: '🎯', desc: 'Logged 10 practice sessions' },
+            { id: 'community_star', name: 'Community Star', icon: '⭐', desc: 'Shared your first progress' },
+            { id: 'genre_explorer', name: 'Genre Explorer', icon: '🧭', icon: '🧭', desc: 'Learned songs from 5 genres' },
+            { id: 'centurion', name: 'Centurion', icon: '💯', desc: 'Logged 100+ minutes of practice' },
+            { id: 'multi_tasker', name: 'Multi-Tasker', icon: '🎭', desc: 'Completed 10 songs' },
+            { id: 'viral_vibes', name: 'Viral Vibes', icon: '🔥', desc: 'Got 10 likes on a share' }
+        ];
+
+        // Simulated Leaderboard Data
+        const LEADERBOARD = [
+            { name: 'FolkMaster_Jane', streak: 12, songs: 15 },
+            { name: 'BluesBro_Mike', streak: 8, songs: 11 },
+            { name: 'OldTime_Olga', streak: 6, songs: 9 },
+            { name: 'Bluegrass_Bob', streak: 5, songs: 7 },
+            { name: 'YourRank', streak: state.streak, songs: state.songsCompleted, isYou: true }
+        ];
+
+        // Weekly Challenges (rotates)
+        const CHALLENGES = [
+            { name: 'Old Time Fiddle Tunes', desc: 'Learn a traditional old time fiddle tune! Think "Old Joe Clark," "Liberty," or "Turkey in the Straw."' },
+            { name: 'Blues Week', desc: 'Focus on blues fundamentals. A 12-bar blues or a classic like "Statesboro Blues."' },
+            { name: 'Flatpickin\' Fun', desc: 'Master a flatpicking tune. "Ashland Breakdown" or "Big Black Joe."' },
+            { name: 'Carter Family Classics', desc: 'Learn a Carter Family song. "Wildwood Flower" or "Will the Circle Be Unbroken."' }
+        ];
+
+        // Initialize
+        function init() {
+            loadState();
+            renderBadges();
+            renderLeaderboard();
+            updateStats();
+            setWeeklyChallenge();
+            
+            if (state.currentSong) {
+                showCurrentSong();
+            }
+        }
+
+        // Load/Save State
+        function loadState() {
+            const saved = localStorage.getItem('song-a-week-state');
+            if (saved) {
+                state = JSON.parse(saved);
+            }
+        }
+
+        function saveState() {
+            localStorage.setItem('song-a-week-state', JSON.stringify(state));
+        }
+
+        // Render Functions
+        function renderBadges() {
+            const grid = document.getElementById('badgesGrid');
+            grid.innerHTML = BADGES.map(badge => {
+                const earned = state.badges.includes(badge.id);
+                return `
+                    <div class="badge ${earned ? 'earned' : ''}" title="${badge.desc}">
+                        <div class="badge-icon">${badge.icon}</div>
+                        <div class="badge-name">${badge.name}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderLeaderboard() {
+            const list = document.getElementById('leaderboard');
+            LEADERBOARD[4].streak = state.streak;
+            LEADERBOARD[4].songs = state.songsCompleted;
+            
+            const sorted = [...LEADERBOARD].sort((a, b) => b.streak - a.streak);
+            
+            list.innerHTML = sorted.map((user, i) => {
+                const rankClass = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : 'normal';
+                return `
+                    <li>
+                        <div class="rank ${rankClass}">${i + 1}</div>
+                        <div class="user-info">
+                            <div class="user-name">${user.name} ${user.isYou ? '(You)' : ''}</div>
+                            <div class="user-streak">🔥 ${user.streak} week streak</div>
+                        </div>
+                        <div class="user-songs">${user.songs} songs</div>
+                    </li>
+                `;
+            }).join('');
+        }
+
+        function updateStats() {
+            document.getElementById('totalSongs').textContent = state.songsCompleted;
+            document.getElementById('totalMinutes').textContent = state.totalMinutes;
+            document.getElementById('badgesEarned').textContent = state.badges.length;
+            document.getElementById('headerStreak').textContent = state.streak;
+        }
+
+        function setWeeklyChallenge() {
+            const today = new Date();
+            const weekNum = Math.floor(today.getTime() / (7 * 24 * 60 * 60 * 1000));
+            const challenge = CHALLENGES[weekNum % CHALLENGES.length];
+            document.getElementById('challengeName').textContent = challenge.name;
+            document.getElementById('challengeDesc').textContent = challenge.desc;
+        }
+
+        // Song Management
+        function openPicker() {
+            document.getElementById('pickerModal').classList.add('active');
+            document.querySelectorAll('.genre-btn').forEach(btn => btn.classList.remove('selected'));
+        }
+
+        function closePicker() {
+            document.getElementById('pickerModal').classList.remove('active');
+        }
+
+        function confirmSong() {
+            const title = document.getElementById('songTitle').value.trim();
+            const artist = document.getElementById('songArtist').value.trim();
+            const selectedGenre = document.querySelector('.genre-btn.selected');
+            
+            if (!title) {
+                alert('Please enter a song title!');
+                return;
+            }
+
+            const genre = selectedGenre ? selectedGenre.dataset.genre : 'folk';
+            
+            state.currentSong = {
+                title,
+                artist: artist || 'Traditional',
+                genre,
+                startDate: new Date().toISOString(),
+                completed: false
+            };
+            
+            if (!state.startDate) {
+                state.startDate = state.startDate;
+            }
+            
+            saveState();
+            showCurrentSong();
+            closePicker();
+            
+            // Clear inputs
+            document.getElementById('songTitle').value = '';
+            document.getElementById('songArtist').value = '';
+        }
+
+        function showCurrentSong() {
+            const display = document.getElementById('songDisplay');
+            display.classList.remove('empty');
+            
+            const song = state.currentSong;
+            display.innerHTML = `
+                <h3>${song.title}</h3>
+                <p class="artist">${song.artist}</p>
+                <span class="genre-tag">${song.genre}</span>
+                <div class="days-remaining">
+                    <span id="daysNum">${getDaysRemaining()}</span>
+                    <span>days remaining</span>
+                </div>
+            `;
+
+            document.getElementById('startActions').style.display = 'none';
+            document.getElementById('songActions').style.display = 'block';
+            document.getElementById('progressSection').style.display = 'block';
+            
+            updateProgress();
+            renderPracticeLog();
+        }
+
+        function getDaysRemaining() {
+            if (!state.currentSong) return 7;
+            const start = new Date(state.currentSong.startDate);
+            const now = new Date();
+            const diffDays = Math.ceil((now - start) / (1000 * 60 * 60 * 24));
+            return Math.max(0, 7 - diffDays);
+        }
+
+        function updateProgress() {
+            if (!state.currentSong) return;
+            
+            const start = new Date(state.currentSong.startDate);
+            const now = new Date();
+            const diffDays = Math.ceil((now - start) / (1000 * 60 * 60 * 24));
+            const progress = Math.min(100, (diffDays / 7) * 100);
+            
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressPercent').textContent = Math.round(progress) + '%';
+        }
+
+        // Practice Logging
+        function logPractice() {
+            const duration = prompt('How many minutes did you practice?', '30');
+            if (!duration) return;
+            
+            const mins = parseInt(duration);
+            if (isNaN(mins) || mins <= 0) {
+                alert('Please enter a valid number of minutes!');
+                return;
+            }
+
+            state.practiceLog.push({
+                date: new Date().toISOString(),
+                duration: mins
+            });
+            state.totalMinutes += mins;
+            
+            // Check badges
+            checkBadges();
+            
+            saveState();
+            updateStats();
+            renderPracticeLog();
+        }
+
+        function renderPracticeLog() {
+            const container = document.getElementById('practiceEntries');
+            if (state.practiceLog.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">No practice sessions logged yet.</p>';
+                return;
+            }
+
+            container.innerHTML = state.practiceLog.slice(-5).reverse().map(log => `
+                <div class="log-entry">
+                    <span>${new Date(log.date).toLocaleDateString()}</span>
+                    <span class="duration">${log.duration} min</span>
+                </div>
+            `).join('');
+        }
+
+        // Complete Song
+        function markComplete() {
+            if (!state.currentSong) return;
+            
+            if (confirm(`Mark "${state.currentSong.title}" as complete?`)) {
+                state.songsCompleted++;
+                state.streak++;
+                state.currentSong.completed = true;
+                
+                // Check badges
+                checkBadges();
+                
+                saveState();
+                updateStats();
+                
+                alert('🎉 Congratulations! Song marked as complete!');
+                
+                // Reset for next song
+                state.currentSong = null;
+                saveState();
+                location.reload();
+            }
+        }
+
+        // Badge Checking
+        function checkBadges() {
+            // First Song
+            if (state.songsCompleted >= 1 && !state.badges.includes('first_song')) {
+                state.badges.push('first_song');
+            }
+            // Practice Pro
+            if (state.practiceLog.length >= 10 && !state.badges.includes('practice_pro')) {
+                state.badges.push('practice_pro');
+            }
+            // Centurion
+            if (state.totalMinutes >= 100 && !state.badges.includes('centurion')) {
+                state.badges.push('centurion');
+            }
+            // Week Warrior
+            if (state.streak >= 4 && !state.badges.includes('week_warrior')) {
+                state.badges.push('week_warrior');
+            }
+            // Multi-Tasker
+            if (state.songsCompleted >= 10 && !state.badges.includes('multi_tasker')) {
+                state.badges.push('multi_tasker');
+            }
+            
+            renderBadges();
+        }
+
+        // Sharing
+        function shareProgress(platform) {
+            const text = `🎵 I'm on a ${state.streak}-week streak with the Song-a-Week Challenge! Currently learning: ${state.currentSong?.title || 'my next song'}. Join me! #SongAWeek #LearnMusic`;
+            
+            if (platform === 'twitter') {
+                window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
+            }
+            
+            // Award badge for sharing
+            if (!state.badges.includes('community_star')) {
+                state.badges.push('community_star');
+                saveState();
+                renderBadges();
+                updateStats();
+                alert('🏅 Badge earned: Community Star!');
+            }
+        }
+
+        // Genre Selection
+        document.getElementById('genreGrid').addEventListener('click', (e) => {
+            if (e.target.classList.contains('genre-btn')) {
+                document.querySelectorAll('.genre-btn').forEach(btn => btn.classList.remove('selected'));
+                e.target.classList.add('selected');
+            }
+        });
+
+        // Close modal on overlay click
+        document.getElementById('pickerModal').addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal-overlay')) {
+                closePicker();
+            }
+        });
+
+        // Initialize app
+        init();
+    </script>
+</body>
+</html>
